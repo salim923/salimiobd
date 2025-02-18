@@ -54,6 +54,8 @@ builder.Services.AddAuthentication(options =>
 .AddGoogle(options => 
 {
 
+    options.ClientId = "";
+    options.ClientSecret = "";
     options.CallbackPath = new PathString("/signin-google");
 });
 

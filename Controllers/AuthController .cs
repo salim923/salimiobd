@@ -47,31 +47,35 @@ namespace OBD.Controllers
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(name))
                 return BadRequest("Unable to retrieve user information.");
 
-         
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
+            string token;
             if (existingUser == null)
             {
-               
                 var newUser = new User
                 {
-                    Username = email,
+                    Username = name,
                     Email = email,
-                    PasswordHash = null 
+                    PasswordHash = null
                 };
 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
-                return Ok(new { Message = "User created and authenticated successfully.", User = newUser });
+                token = GenerateJwtToken(newUser);
             }
             else
             {
-                // Log in the existing user
-                var token = GenerateJwtToken(existingUser);
-                return Ok(new { Message = "User authenticated successfully.", Token = token });
+                token = GenerateJwtToken(existingUser);
             }
+
+            Console.WriteLine($"Generated Token: {token}");
+
+            var redirectUrl = $"http://localhost:4200/google-redirect?token={token}";
+            return Redirect(redirectUrl);
         }
+
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)

@@ -35,9 +35,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options => 
+.AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -51,11 +51,10 @@ builder.Services.AddAuthentication(options =>
     };
 })
 .AddCookie()
-.AddGoogle(options => 
+.AddGoogle(options =>
 {
-
-    options.ClientId = "";
-    options.ClientSecret = "";
+    options.ClientId = "262564242693-jai5qkro5a6ou6gjb0dlcbh71abfsc25.apps.googleusercontent.com";
+    options.ClientSecret = "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";
     options.CallbackPath = new PathString("/signin-google");
 });
 
